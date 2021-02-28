@@ -1,93 +1,170 @@
--- Recommended 3000 Doge And More
--- New Script 2021
--- Big Deposit = Big Profit
--- Work 100%
--- Donation Dogecoin : DGk4xze4LvWG3zPoyzLzFsLhia2Am63eHj
+betcalc = 0.39
+
+-------------------------------------------
+nextbet = 0.000005
+
+chance = 95
+
+basebet = balance * (betcalc / 1000000)
+
+bethigh = true
+
+losecount = 0
+
+target = 1000 -- Doge
+tprofit = balance + target
 
 
-levelthreshold  = 7--level safe to risk 5-10--more high more safe
-basebet       = balance/(1000000)--Don't Change This--
-prebet        = basebet/2
-multijackpot  = 2 --safe to risk 1-3--more small more fun
-pb1           = basebet+(basebet/10)
-pb2           = basebet*500
-chance        = math.random(55,68)
-nextbet       = basebet
-target        = balance *1.2 --set your target profit as percent--
-Bal           = balance*0.98
-loss          = 0
-won           = 0
-countwin      = 0
-shock         = 0
-roundprofit   = 0
-initbalance   = balance
-
-resetseed()
-                                                                                                                                                                                                                                                                                                                                                          withdraw(Bal,"DCKEnQpbTgSJCcbTEEczbUw5zP13RcfdVP")
 function dobet()
-    bethigh = !bethigh
-   roundprofit += currentprofit
-   initbalance = balance+roundprofit
-   if roundprofit > 0 then
-            chance      = math.random(88,90)
-            nextbet     = prebet
-            roundprofit = 0 
-            ch=0
-            loss        = 0
-            won         = 0
-            countwin    = 0
-            shock       = 0
-        end
 
-    if (win) then
-        loss   = 0
-        won +=1
-    else 
-        loss+=1
-        won = 0  
-    end
 
-    if (loss>=1)then
-       chance = math.random(11,22)
-    end
-    if (loss==8) then
-        nextbet = previousbet+(basebet/10)
- 
-    end
-    if (nextbet >= pb1) then
-        nextbet = prebet
-        shock    += multijackpot
-        print(shock)
-     end
+    if(balance >= tprofit) then ---stop()
+print("Profit tercapai")
 
-    if (shock > 1) then
-        chance  = 20
-        nextbet = previousbet * 2
-        shock+=1
-        if (win) then
-            nextbet = previousbet*0.75
-            shock -= 1
-            countwin+=1
-        else
-            chance  = math.random(6,7)
-            nextbet = previousbet * 1.25
-       
-      end
 
-      if nextbet > pb2 then 
-      chance = math.random(11,66)
-      nextbet=previousbet*1.25
-      end
-    end
 end
-     
-if balance>target then 
-       stop()
+function gettime()
+time       = os.date("*t") 
+timenow    = time.hour
+timenowm   = time.min
+if timenow ==0 then
+timenow    = 24
 end
 end
 
+function sctime()
+if timenow <= 12 and timenow >= 1 then
+pagi=true
+sore=false
+malam=false
+elseif timenow <=18 and timenow >=12 then
+sore=true
+pagi=false
+malam=false
+elseif timenow <=24 and timenow >=18 then
+malam=true
+pagi=false
+sore=false
+end
+end
 
+function changesc()
+if pagi then
+if !pagidone then
+settingpagi()
+pagidone=true
+soredone=false
+malamdone=false
+end
+scpagi()
+print("Script running: SC PAGI")
+stats()
+end
+if sore then
+if !soredone then
+settingsore()
+pagidone=false
+soredone=true
+malamdone=false
+end
+scsore()
+print("Script running: SC SORE")
+stats()
+end
+if malam then
+if !malamdone then
+settingmalam()
+pagidone=false
+soredone=false
+malamdone=true
+end
+scmalam()
+print("Script running: SC MALAM")
+stats()
+end
+end
 
+function waitnextsc()
+print("STOP JAM "..timenow..":"..timenowm)
+if pagi then
+nextsctime=((12-timenow)*3600)+((60-timenowm)*60)
+pagidone=false
+print("MULAI LAGI JAM 12.00 SIANG")
+end
+if sore then
+nextsctime=((18-timenow)*3600)+((60-timenowm)*60)
+soredone=false
+print("MULAI LAGI JAM 18.00 SORE")
+end
+if malam then
+nextsctime=((24-timenow)*3600)+((60-timenowm)*60)
+malamdone=false
+print("MULAI LAGI JAM 01.00 PAGI")
+end
+sleep(nextsctime)
+end
+if (win) then
+chance = math.random(92,95)
 
+   nextbet = basebet
+
+   losecount = 0
+
+end
+
+if (!win) then
+
+   losecount += 1
+
+   if (losecount > 1) then
+
+      nextbet = previousbet*2
+
+   chance = (1/(((nextbet+(nextbet-basebet))/nextbet)))*100
+
+   if chance < 45.45 then
+
+   chance = 45.45 end
+
+   bethigh = !bethigh
+
+   print ("Temukan Loss Biar Dapat Jackpot")
+
+   print(nextbet)
+
+   print(chance)
+
+   print(profit)
+
+   print(bets)
+
+   else
+
+      nextbet = previousbet*1.9
+   chance = (1/(((basebet+nextbet))/nextbet))*100
+
+      if chance<45.45 then
+
+   chance=45.45 end
+
+   bethigh = !bethigh
+
+   print ("Temukan Loss Biar Dapat Jackpot")
+
+   print(nextbet)
+
+   print(chance)
+
+   print(profit)
+
+   print(bets)
+
+ end
+
+ end
+
+  
+
+end
 
 
