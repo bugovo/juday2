@@ -1,56 +1,55 @@
-chance  = 49 
-betcalc     = 0.39
-basebet = balance * (betcalc /1000000)
-profits = 0
-sesi    = 0
-hibet   = 0
-margin  = 0
-stopwin = false
-nextbet = basebet
+--- Mode Biju ----
 
+betcalc = 0.39
+basebet = balance * (betcalc / 1000000)
+chance1    = math.random (83.5,85.5) 
+chance2    = math.random (33, 35)
+multiplier = 1.6
+chance     = chance1
+nextbet     = basebet
+bethigh     = true
+counter     = 0
+wincount    = 0
+totalloss   = 0
+initbalance = balance
+tp = balance + 120 -- target
+sl = balance - 100 -- stop loss
 function dobet()
-
-    profits += currentprofit
-    margin += currentprofit
-
-    if margin >= 0 then
-        margin  = 0
-        basebet = balance / div
-        resets  = basebet * 10
+    counter += 1
+    print("Bet Amount :"..string.format("%.8f",nextbet))
+    if counter == 25 then
+    print(" ")
+        print("Profit :"..string.format("%.8f",profit))
+        print(" ")
+        print("Current Balance : "..string.format("%.8f",balance))
+        print(" ")
+        counter = 0
+    end
+    if ((chance == chance2) and win) then
+        initbalance = balance
+        totalloss   = 0
+    end
+    if win then
         nextbet = basebet
+        wincount += 1
+        bethigh = true
+        chance  = chance1
+        if initbalance > balance then
+           totalloss = initbalance - balance 
+        end        
+       if wincount > 10 then
+           chance = chance2
+            nextbet  = basebet+(totalloss/2)
+            bethigh  = false
+            wincount = 0
+        end 
     end
-
-    if profits > resets then 
-        if stopwin then stop() end
-        sesi += 1 
-        profits = 0
+    if !win then
+        wincount = 0
+        if (chance == chance2) then
+                nextbet = previousbet*multiplier
+        end
+   if balance > tp then stop() end
+   if balance - nextbet < sl then stop() end
     end
-    
-    if !win then  
-        nextbet = basebet   
-    end  
-
-    if (currentstreak == 1) then
-        nextbet = math.abs(profits) + (basebet * 2)
-    end 
-    
-    if (nextbet > hibet) then
-        hibet = nextbet
-    end
-    
-    if (nextbet > maxbet) then 
-        nextbet = basebet 
-        resetstats()
-    end
-    
-    if (nextbet < 0) then nextbet = basebet end
-    if (balance > maxbal) then stop() end
-    if (balance - nextbet < minbal) then stop() end
-    
-    print("\n\n")
-    print("target "..maxbal)
-    print("highest bet "..hibet)
-    print("margin "..margin)
-    print("risk "..profits)
-    print("sesi "..sesi)
-end
+end -- <<END OF DOBET>>
