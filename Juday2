@@ -1,55 +1,58 @@
---- Mode Biju ----
-
-betcalc = 0.39
-basebet = balance * (betcalc / 1000000)
-chance1    = math.random (83.5,85.5) 
-chance2    = math.random (33, 35)
-multiplier = 1.6
-chance     = chance1
-nextbet     = basebet
-bethigh     = true
-counter     = 0
-wincount    = 0
-totalloss   = 0
-initbalance = balance
-tp = balance + 120 -- target
-sl = balance - 100 -- stop loss
+resetstats()
+startbalance = balance 
+m1           = 1.1
+m2           = 1.65
+roundprofit  = 0
+n            = 0.01
+base         = balance * (betcalc/100000)
+nextbet      = base
+chance1      = math.random(5,9)
+chance2      = math.random(19,20)
+l            = 0
+stop_profit  = balance + 100.01
+bethigh      = true
+chance       = chance1
 function dobet()
-    counter += 1
-    print("Bet Amount :"..string.format("%.8f",nextbet))
-    if counter == 25 then
-    print(" ")
-        print("Profit :"..string.format("%.8f",profit))
-        print(" ")
-        print("Current Balance : "..string.format("%.8f",balance))
-        print(" ")
-        counter = 0
-    end
-    if ((chance == chance2) and win) then
-        initbalance = balance
-        totalloss   = 0
-    end
-    if win then
-        nextbet = basebet
-        wincount += 1
-        bethigh = true
-        chance  = chance1
-        if initbalance > balance then
-           totalloss = initbalance - balance 
-        end        
-       if wincount > 10 then
-           chance = chance2
-            nextbet  = basebet+(totalloss/2)
-            bethigh  = false
-            wincount = 0
+ 
+    if balance > stop_profit then 
+        stop() 
+    end 
+    l += 1 
+    r       = math.random(100) 
+    chance1 = math.random(5,9) 
+    chance2 = math.random(19,20) 
+    
+    if win then  
+        l       = 0 
+        s       = 0 
+        base    = n 
+        nextbet = base 
+        chance  = chance1 
+        bethigh = !bethigh 
+    end 
+ 
+    if (l == 0) then
+        chance  = chance1 
+        base    = n  
+        nextbet = base  
+    else  
+        nextbet = previousbet * m1 
+        chance  = chance1 
+    end 
+      
+    if (l == 20) then
+        nextbet = previousbet * m2 
+        chance  = chance2 
+    end 
+ 
+    if (l > 20) then
+        chance2 = math.random(19,20) 
+        chance  = chance2 
+        nextbet = previousbet * m2 
+        if (r > 50) then 
+            bethigh = true 
+        else 
+            bethigh = false 
         end 
-    end
-    if !win then
-        wincount = 0
-        if (chance == chance2) then
-                nextbet = previousbet*multiplier
-        end
-   if balance > tp then stop() end
-   if balance - nextbet < sl then stop() end
-    end
-end -- <<END OF DOBET>>
+    end 
+end
