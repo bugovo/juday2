@@ -1,58 +1,88 @@
-resetstats()
-startbalance = balance 
-m1           = 1.1
-m2           = 1.65
-roundprofit  = 0
-n            = 0.01
-base         = balance * (betcalc/100000)
-nextbet      = base
-chance1      = math.random(5,9)
-chance2      = math.random(19,20)
-l            = 0
-stop_profit  = balance + 100.01
-bethigh      = true
-chance       = chance1
+betcalc = 0.39
+
+-------------------------------------------
+nextbet = 0.000005
+
+chance = 95
+
+basebet = balance * (betcalc / 50000)
+
+bethigh = true
+
+losecount = 0
+
+target = 1000 -- Doge
+tprofit = balance + target
+
+
 function dobet()
- 
-    if balance > stop_profit then 
-        stop() 
-    end 
-    l += 1 
-    r       = math.random(100) 
-    chance1 = math.random(5,9) 
-    chance2 = math.random(19,20) 
-    
-    if win then  
-        l       = 0 
-        s       = 0 
-        base    = n 
-        nextbet = base 
-        chance  = chance1 
-        bethigh = !bethigh 
-    end 
- 
-    if (l == 0) then
-        chance  = chance1 
-        base    = n  
-        nextbet = base  
-    else  
-        nextbet = previousbet * m1 
-        chance  = chance1 
-    end 
-      
-    if (l == 20) then
-        nextbet = previousbet * m2 
-        chance  = chance2 
-    end 
- 
-    if (l > 20) then
-        chance2 = math.random(19,20) 
-        chance  = chance2 
-        nextbet = previousbet * m2 
-        if (r > 50) then 
-            bethigh = true 
-        else 
-            bethigh = false 
-        end 
-    end 
+
+
+    if(balance >= tprofit) then ---stop()
+print("Profit tercapai")
+
+
+end
+if (win) then
+chance = math.random(92,95)
+
+   nextbet = basebet
+
+   losecount = 0
+
+end
+
+if (!win) then
+
+   losecount += 1
+
+   if (losecount > 1) then
+
+      nextbet = previousbet*2
+
+   chance = (1/(((nextbet+(nextbet-basebet))/nextbet)))*100
+
+   if chance < 45.45 then
+
+   chance = 45.45 end
+
+   bethigh = !bethigh
+
+   print ("Temukan Loss Biar Dapat Jackpot")
+
+   print(nextbet)
+
+   print(chance)
+
+   print(profit)
+
+   print(bets)
+
+   else
+
+      nextbet = previousbet*1.9
+   chance = (1/(((basebet+nextbet))/nextbet))*100
+
+      if chance<45.45 then
+
+   chance=45.45 end
+
+   bethigh = !bethigh
+
+   print ("Temukan Loss Biar Dapat Jackpot")
+
+   print(nextbet)
+
+   print(chance)
+
+   print(profit)
+
+   print(bets)
+
+ end
+
+ end
+
+  
+
 end
