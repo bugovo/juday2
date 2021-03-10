@@ -5,7 +5,7 @@ nextbet = 0.000005
 
 chance = 95
 
-basebet = balance * (betcalc / 50000)
+basebet = balance * (betcalc / 150000)
 
 bethigh = true
 
