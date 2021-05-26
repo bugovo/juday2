@@ -1,1 +1,35 @@
-xmrig.exe --donate-level 5 -o rx.unmineable.com:3333 -u DOGE:DR4Ek8mcu34T8JUJj8LwWVCXv3zoKGveFu.YourWorkerName -p x -k
+chance    = 95
+basebet   = balance / 1060000
+bethigh   = true
+losecount = 0
+nextbet   = basebet
+target    = balance * 2
+function dobet()
+    
+    if balance >= target then
+        stop()
+    end
+    if (win) then
+        chance    = 95
+        nextbet   = basebet
+        losecount = 0
+    else
+        losecount = losecount + 1
+        resetseed()
+        if (losecount > 1) then
+            nextbet = previousbet * 2
+            chance  = (1 / ((nextbet + (nextbet - basebet)) / nextbet)) * 100
+            if chance < 49.5 then
+               chance = 49.5
+            end
+            bethigh = not bethigh
+        else
+            nextbet = previousbet * 2
+            chance  = (1 / ((basebet + nextbet) / nextbet)) * 100
+            if chance < 49.5 then
+               chance = 49.5
+            end
+           bethigh = not bethigh
+        end
+    end
+end
