@@ -1,5 +1,5 @@
 chance    = 95
-basebet   = balance / 1060000
+basebet   = balance / 10600000
 bethigh   = true
 losecount = 0
 nextbet   = basebet
