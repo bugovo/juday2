@@ -5,6 +5,7 @@ losecount = 0
 nextbet   = basebet
 target    = balance * 2
 function dobet()
+sleep(0.2)
     
     if balance >= target then
         stop()
