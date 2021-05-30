@@ -16,6 +16,7 @@ tprofit = balance + target
 
 
 function dobet()
+sleep(0.2)
 
 
     if(balance >= tprofit) then ---stop()
